@@ -1,0 +1,2 @@
+[simplesam]
+simplesam ansible_ssh_user=samos

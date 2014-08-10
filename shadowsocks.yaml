@@ -1,0 +1,10 @@
+- name: Deploy shadowsocks container
+  docker: 
+      image: oddrationale/docker-shadowsocks
+      expose: ["8898"]
+      ports: ["8898:8898"]
+      command: -s 0.0.0.0 -p 8898 -k samosxxx -m rc4
+      name: shadowsocks
+
+- name: Allow access to shadowsocks port
+  ufw: rule=allow port=8898

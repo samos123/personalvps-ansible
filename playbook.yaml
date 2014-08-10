@@ -1,0 +1,20 @@
+- hosts: simplesam
+  sudo: true
+  roles:
+      - angstwad.docker_ubuntu
+  tasks:
+      - name: Basic packages
+        apt: pkg={{ item }}
+        with_items:
+            - python-pip
+            - vim
+            - git
+      - name: Install docker-py with pip
+        pip: name=docker-py
+      - name: Check if /etc/default/ufw exists
+        stat: path=/etc/default/ufw
+        register: ufw_default_exists
+      - name: Change ufw default forward policty from drop to accept
+        lineinfile: dest=/etc/default/ufw regexp="^DEFAULT_FORWARD_POLICY=" line=DEFAULT_FORWARD_POLICY=\"ACCEPT\"
+        when: ufw_default_exists.stat.exists
+      - include: shadowsocks.yaml
